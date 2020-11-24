@@ -20,11 +20,12 @@
 ```javascript
 const HtmlToc = require('t_html_toc')
 require('t_html_toc/src/style.css')
-const toc = new HtmlToc(options)
-toc.mountToc(mountOptions)
+const options={}，tocOption={} // 具体在下方
+const toc = new HtmlToc('#content',options)
+toc.mountToc('#tree',，tocOption)
 ```
 
-### 样式
+### 样式 可以不引入 自己实现即可
 
 | className             | 作用                                |                         |
 | --------------------- | ----------------------------------- | ----------------------- |
