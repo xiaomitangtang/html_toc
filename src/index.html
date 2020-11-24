@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript"
+    src="https://webapi.amap.com/maps?v=1.4.15&key=969b79638d41c206d17f392108067fd6"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+  <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"></script>
+  <style>
+    #container {
+      width: 300px;
+      height: 190px;
+    }
+
+    #tree {
+      background-color: #eee;
+    }
+
+    #tree[active] {
+      background-color: #666;
+    }
+
+    .para_node {
+      color: red;
+      cursor: pointer;
+    }
+
+    .para_node[active] {
+      color: green;
+    }
+
+    .para_node_level_0 {
+      padding-left: 20px;
+    }
+
+    .para_node_level_1 {
+      padding-left: 40px;
+    }
+
+    .para_node_level_2 {
+      padding-left: 60px;
+    }
+
+    .para_node_level_3 {
+      padding-left: 80px;
+    }
+
+    .para_node_level_4 {
+      padding-left: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="tree">
+
+  </div>
+
+  <div id="para">
+    <h1 class="hh1 t01">前言</h1>
+    <h2 class='t02'>第一张，第一段</h2>
+    <h2 class='t02'>第一张，第二段</h2>
+    <div>
+      <h2 class='t02'>第一张，第三段</h2>
+      <h2 class='t02'>第一张，第四段</h2>
+      <h4 class="t04">解决方案</h4>
+      <pre>
+           const t = new HtmlToc({ root: "#para" }) 
+           console.log(t.getTreeData())
+           console.log(t.createPlatData())
+           生成平级或者树形数据结构，
+
+           根据这个结构套用对应的树组件 然后给树组件的节点添加点击时间
+
+           此插件生成的树结构每一个节点都包含了节点 html 元素
+
+           可以在点击事件中获取到
+
+           调用
+          node.scrollIntoView({
+            behavior: 'smooth'
+          })
+
+          即可实现滚动
+      </pre>
+    </div>
+    <h1 class="t01">后续</h1>
+    <h2 class='t02'>第二章，第一段</h2>
+    <h2 class='t02'>第二章，第二段</h2>
+    <h1 class="t01">尾声</h1>
+    <h2 class='t02'>第三章，第一段</h2>
+    <h2 class='t02'>第三章，第二段</h2>
+    <h3 class="t03" id='last'>第三章，第二段，第一节</h3>
+  </div>
+</body>
+<script src="./index.js"></script>
+<script>
+  function test() {
+    const t = new HtmlToc({ root: "#para" })
+    console.log(t.getTreeData())
+    console.log(t.createPlatData())
+    t.addEvent({
+      click: (e) => {
+        e.target.scrollIntoView({
+          behavior: 'smooth'
+        })
+
+      }
+    })
+  }
+
+  function demoForJqTree() {
+    const t2 = new HtmlToc({
+      root: "#para",
+      selecters: ['.t01', '.t02', '.t03', '.t04'],
+      titleKey: "text",
+      noparent: true
+    })
+
+    const data = t2.getTreeData()
+    $('#tree').jstree({
+      'core': {
+        'data': data,
+        "plugins": ["checkbox"],
+        'check_callback': function () { return true; }
+      }
+    }).on('changed.jstree', (e, data) => {
+      // 这么取值完全是插件是这么设计的，
+      let paraTarget = data.node.original.node
+      paraTarget.scrollIntoView({
+        behavior: 'smooth'
+      })
+    })
+  }
+
+  // demoForJqTree()
+
+
+  function testToc() {
+    const t = new HtmlToc({ root: "#para" })
+    t.mountToc('#tree')
+  }
+  testToc()
+</script>
+
+</html>
