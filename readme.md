@@ -7,11 +7,13 @@
 ### 使用默认样式和节点
 
 ```javascript
+const HtmlToc = require('t_html_toc')
+require('t_html_toc/src/style.css')
 const toc = new HtmlToc(options)
 toc.mountToc(mountOptions)
 ```
 
-### 暂时不带样式
+### 样式
 
 | className             | 作用                                |                         |
 | --------------------- | ----------------------------------- | ----------------------- |
@@ -55,7 +57,7 @@ toc.mountToc(mountOptions)
 ### 导出数据给其他 js 库生成个性化的树 比如 jquery 的 jsTree
 
 ```javascript
-  const toc = new HtmlToc({
+  const toc = new HtmlToc('#root',{
     ...
     titleKey: "text",
     noparent: true
@@ -80,7 +82,7 @@ toc.mountToc(mountOptions)
 ### 除了导出 treeData 还可以导出平铺的数据
 
 ```javascript
-const toc = new HtmlToc(options)
+const toc = new HtmlToc(selector, options)
 // 导出  树形数据
 toc.getTreeData()
 // 导出平铺数据

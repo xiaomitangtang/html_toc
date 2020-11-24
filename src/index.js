@@ -22,10 +22,10 @@ const DefaultMountTocOptions = {
   clickHanle: null
 }
 class HtmlToc {
-  constructor(options) {
+  constructor(root, options) {
     options = Object.assign({}, DefaultOptions, options)
     this.$options = options
-    this.$root = this.initRoot()
+    this.$root = this.initRoot(root)
     this.$selectors = this.initSelectors()
     this.$titleKey = options.titleKey
     this.$childrenKey = options.childrenKey
@@ -33,8 +33,7 @@ class HtmlToc {
     this.$clearParent = options.clearParent
     this.updateData()
   }
-  initRoot() {
-    const { root } = this.$options
+  initRoot(root) {
     return this.parseSelector(root)
   }
   parseSelector(selecter) {
@@ -251,4 +250,9 @@ function updateAttr(node, key, val) {
   } else {
     node.removeAttribute(key)
   }
+}
+
+
+if (module) {
+  module.exports = HtmlToc
 }

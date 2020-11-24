@@ -1,0 +1,30 @@
+{
+  "name": "t_html_toc",
+  "version": "0.0.3",
+  "description": "toc html_toc word js paragraph",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaomitangtang/html_toc.git"
+  },
+  "keywords": [
+    "toc",
+    "html",
+    "js",
+    "html_toc",
+    "word",
+    "web_toc",
+    "关键字",
+    "摘要",
+    "目录"
+  ],
+  "author": "xiaomitangtang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaomitangtang/html_toc/issues"
+  },
+  "homepage": "https://github.com/xiaomitangtang/html_toc#readme"
+}

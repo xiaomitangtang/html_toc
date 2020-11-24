@@ -94,7 +94,7 @@
 <script src="./index.js"></script>
 <script>
   function test() {
-    const t = new HtmlToc({ root: "#html_toc" })
+    const t = new HtmlToc("#html_toc")
     console.log(t.getTreeData())
     console.log(t.createPlatData())
     t.addEvent({
@@ -108,8 +108,7 @@
   }
 
   function demoForJqTree() {
-    const t2 = new HtmlToc({
-      root: "#html_toc",
+    const t2 = new HtmlToc("#html_toc", {
       selecters: ['.t01', '.t02', '.t03', '.t04'],
       titleKey: "text",
       noparent: true
@@ -135,7 +134,7 @@
 
 
   function testToc() {
-    const t = new HtmlToc({ root: "#html_toc" })
+    const t = new HtmlToc("#html_toc")
     t.mountToc('#tree')
     window.t = t
   }
