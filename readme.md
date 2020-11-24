@@ -1,3 +1,7 @@
+## 效果
+
+![alt 效果](https://github.com/xiaomitangtang/html_toc/blob/master/imgs/toc.png?raw=true)
+
 ## 使用方式
 
 ### 使用默认样式和节点
@@ -9,41 +13,41 @@ toc.mountToc(mountOptions)
 
 ### 暂时不带样式
 
-| className         | 作用                                |                         |
-| ----------------- | ----------------------------------- | ----------------------- |
-| para_node         | toc 生成的节点统一携带的 class 属性 |                         |
-| para_node[active] | 激活的 toc 会带上 active 属性       | 默认情况                |
-| para_node[hidden] | 隐藏的 toc 会带上 hidden 属性       | 默认情况                |
-| para_node_level_X | toc 节点的层级相关                  | X 代表第几级，从 0 开始 |
+| className             | 作用                                |                         |
+| --------------------- | ----------------------------------- | ----------------------- |
+| html_toc_node         | toc 生成的节点统一携带的 class 属性 |                         |
+| html_toc_node[active] | 激活的 toc 会带上 active 属性       | 默认情况                |
+| html_toc_node[hidden] | 隐藏的 toc 会带上 hidden 属性       | 默认情况                |
+| html_toc_node_level_X | toc 节点的层级相关                  | X 代表第几级，从 0 开始 |
 
 ```css
-.para_node {
+.html_toc_node {
   cursor: pointer;
   font-size: 14px;
   user-select: none;
 }
 
-.para_node[active] {
+.html_toc_node[active] {
   color: green;
 }
 
-.para_node_level_0 {
+.html_toc_node_level_0 {
   padding-left: 20px;
 }
 
-.para_node_level_1 {
+.html_toc_node_level_1 {
   padding-left: 40px;
 }
 
-.para_node_level_2 {
+.html_toc_node_level_2 {
   padding-left: 60px;
 }
 
-.para_node_level_3 {
+.html_toc_node_level_3 {
   padding-left: 80px;
 }
 
-.para_node_level_4 {
+.html_toc_node_level_4 {
   padding-left: 100px;
 }
 ```
@@ -66,8 +70,8 @@ toc.mountToc(mountOptions)
       }
     }).on('changed.jstree', (e, data) => {
       // 这么取值完全是插件是这么设计的，
-      let paraTarget = data.node.original.node
-      paraTarget.scrollIntoView({
+      let tocTarget = data.node.original.node
+      tocTarget.scrollIntoView({
         behavior: 'smooth'
       })
     })
@@ -135,7 +139,7 @@ const nodeKey = '_html_toc_node'
 const parentKey = '_html_toc_parent'
 const containerActiveTocItemKey = '_html_old_active_toc'
 const containerClickKey = '_htmlClick'
-const tocItemClassPre = 'para_node para_node_level_'
+const tocItemClassPre = 'html_toc_node html_toc_node_level_'
 const tocNodeKey = '_html_toc_node_data'
 const DefaultOptions = {
   titleKey: 'title',

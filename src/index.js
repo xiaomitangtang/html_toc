@@ -4,7 +4,7 @@ const nodeKey = '_html_toc_node'
 const parentKey = '_html_toc_parent'
 const containerActiveTocItemKey = '_html_old_active_toc'
 const containerClickKey = '_htmlClick'
-const tocItemClassPre = 'para_node para_node_level_'
+const tocItemClassPre = 'html_toc_node html_toc_node_level_'
 const tocNodeKey = '_html_toc_node_data'
 const DefaultOptions = {
   titleKey: "title",
@@ -65,16 +65,16 @@ class HtmlToc {
     children.forEach(n => this.loopChild(n))
   }
   isTargetNode(node) {
-    let isTarget = false, _paraLevel = -1
+    let isTarget = false, _htmlTocLevel = -1
     for (let i = 0; i < this.$selectors.length; i++) {
       const { id, className, tag } = this.$selectors[i]
       if ((id && id === node.id) || (tag && tag === node.tagName) || (className && node.className && node.className.includes(className))) {
         isTarget = true
-        _paraLevel = i
+        _htmlTocLevel = i
       }
       if (isTarget) {
         node._isHtmlToc = true
-        node[LevelKey] = _paraLevel
+        node[LevelKey] = _htmlTocLevel
         return true
       }
     }
@@ -114,12 +114,12 @@ class HtmlToc {
   }
   createTreeData() {
     let rootList = []
-    let platParaNodes = []
+    let plathtmlTocNodes = []
     let tmpNode = null
     this.$targetList.forEach(node => {
       let nodeLevel = node[LevelKey]
       let curNode = { [LevelKey]: nodeLevel, [this.$titleKey]: node.innerText, [nodeKey]: node, [this.$childrenKey]: [] }
-      platParaNodes.push(curNode)
+      plathtmlTocNodes.push(curNode)
       if (!tmpNode) {
         tmpNode = curNode
         rootList.push(tmpNode)
@@ -150,7 +150,7 @@ class HtmlToc {
       }
     })
 
-    platParaNodes.forEach(node => {
+    plathtmlTocNodes.forEach(node => {
       if (this.$clearEmptyChildren && !node[this.$childrenKey] || node[this.$childrenKey].length === 0) {
         delete node[this.$childrenKey]
       }

@@ -12,38 +12,38 @@
   <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"></script>
   <style>
-    #para {
+    #html_toc {
       height: 300px;
       overflow: auto;
     }
 
-    .para_node {
+    .html_toc_node {
       cursor: pointer;
       font-size: 14px;
       user-select: none;
     }
 
-    .para_node[active] {
+    .html_toc_node[active] {
       color: green;
     }
 
-    .para_node_level_0 {
+    .html_toc_node_level_0 {
       padding-left: 20px;
     }
 
-    .para_node_level_1 {
+    .html_toc_node_level_1 {
       padding-left: 40px;
     }
 
-    .para_node_level_2 {
+    .html_toc_node_level_2 {
       padding-left: 60px;
     }
 
-    .para_node_level_3 {
+    .html_toc_node_level_3 {
       padding-left: 80px;
     }
 
-    .para_node_level_4 {
+    .html_toc_node_level_4 {
       padding-left: 100px;
     }
   </style>
@@ -54,7 +54,7 @@
 
   </div>
 
-  <div id="para">
+  <div id="html_toc">
     <h1 class="hh1 t01">前言</h1>
     <h2 class='t02'>第一张，第一段</h2>
     <h2 class='t02'>第一张，第二段</h2>
@@ -63,7 +63,7 @@
       <h2 class='t02'>第一张，第四段</h2>
       <h4 class="t04">解决方案</h4>
       <pre>
-           const t = new HtmlToc({ root: "#para" }) 
+           const t = new HtmlToc({ root: "#html_toc" }) 
            console.log(t.getTreeData())
            console.log(t.createPlatData())
            生成平级或者树形数据结构，
@@ -94,7 +94,7 @@
 <script src="./index.js"></script>
 <script>
   function test() {
-    const t = new HtmlToc({ root: "#para" })
+    const t = new HtmlToc({ root: "#html_toc" })
     console.log(t.getTreeData())
     console.log(t.createPlatData())
     t.addEvent({
@@ -109,7 +109,7 @@
 
   function demoForJqTree() {
     const t2 = new HtmlToc({
-      root: "#para",
+      root: "#html_toc",
       selecters: ['.t01', '.t02', '.t03', '.t04'],
       titleKey: "text",
       noparent: true
@@ -124,8 +124,8 @@
       }
     }).on('changed.jstree', (e, data) => {
       // 这么取值完全是插件是这么设计的，
-      let paraTarget = data.node.original.node
-      paraTarget.scrollIntoView({
+      let html_tocTarget = data.node.original.node
+      html_tocTarget.scrollIntoView({
         behavior: 'smooth'
       })
     })
@@ -135,7 +135,7 @@
 
 
   function testToc() {
-    const t = new HtmlToc({ root: "#para" })
+    const t = new HtmlToc({ root: "#html_toc" })
     t.mountToc('#tree')
     window.t = t
   }
