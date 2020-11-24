@@ -9,7 +9,7 @@ const tocNodeKey = '_html_toc_node_data'
 const DefaultOptions = {
   titleKey: "title",
   childrenKey: "children",
-  selecters: null,
+  selecters: Default_selectors,
   clearEmptyChildren: true,
   clearParent: false
 }
