@@ -169,7 +169,7 @@ class HtmlToc {
   destory() {
     if (this.containers) {
       this.containers.forEach(con => {
-        con.innerHtml = null
+        con.innerHTML = null
         con.removeEventListener('click', con[containerClickKey], false)
         delete con[containerClickKey]
         delete con[containerActiveTocItemKey]
@@ -178,7 +178,7 @@ class HtmlToc {
   }
 
   generateToc(container, options) {
-    container.innerHtml = null
+    container.innerHTML = null
     let nodes = this.getPlatData()
     nodes.forEach(node => {
       const div = document.createElement('div')
