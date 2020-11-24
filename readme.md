@@ -1,3 +1,14 @@
+## 介绍
+
+- 本 js 库主要作用域给一个范围内的 html 通过一定的选择器（默认是 h1 - h6）,生成一个目录树
+- 不依赖任何插件和 js 库的纯原生实现
+- 可以内部挂载生成默认的节点
+- 也可以导出平铺或者树形数据提供给其他插件或者库进行使用
+
+- 注意：导出的数据默认包含了 children parent 等 循环依赖的数据
+- 在提供给外部特定的库可能需要去掉对应的循环依赖字段
+- 比如 jsTree 生成需要 titleKey: "text", noparent: true
+
 ## 效果
 
 ![alt 效果](https://github.com/xiaomitangtang/html_toc/blob/master/imgs/toc.png?raw=true)
