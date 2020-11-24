@@ -7,6 +7,47 @@ const toc = new HtmlToc(options)
 toc.mountToc(mountOptions)
 ```
 
+### 暂时不带样式
+
+| className         | 作用                                |                         |
+| ----------------- | ----------------------------------- | ----------------------- |
+| para_node         | toc 生成的节点统一携带的 class 属性 |                         |
+| para_node[active] | 激活的 toc 会带上 active 属性       | 默认情况                |
+| para_node[hidden] | 隐藏的 toc 会带上 hidden 属性       | 默认情况                |
+| para_node_level_X | toc 节点的层级相关                  | X 代表第几级，从 0 开始 |
+
+```css
+.para_node {
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.para_node[active] {
+  color: green;
+}
+
+.para_node_level_0 {
+  padding-left: 20px;
+}
+
+.para_node_level_1 {
+  padding-left: 40px;
+}
+
+.para_node_level_2 {
+  padding-left: 60px;
+}
+
+.para_node_level_3 {
+  padding-left: 80px;
+}
+
+.para_node_level_4 {
+  padding-left: 100px;
+}
+```
+
 ### 导出数据给其他 js 库生成个性化的树 比如 jquery 的 jsTree
 
 ```javascript
@@ -115,12 +156,13 @@ const DefaultMountTocOptions = {
 
 #### 实例化时的 Options
 
-| 键                 | 默认值   | 作用                                                | 如何配            |
-| ------------------ | -------- | --------------------------------------------------- | ----------------- |
-| titleKey           | title    | 指定导出的数据，节点文本信息的 key                  | 实例化传入 option |
-| childrenKey        | children | 指定导出的数据，子节点的 key                        | 实例化传入 option |
-| clearEmptyChildren | true     | 是否删除 空子节点的数据的 children 字段             | 实例化传入 option |
-| clearParent        | false    | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出 | 实例化传入 option |
+| 键                 | 默认值                    | 作用                                                | 如何配                                                     |
+| ------------------ | ------------------------- | --------------------------------------------------- | ---------------------------------------------------------- |
+| selecters          | 用于生成 toc 的选择器列表 | ['h1', 'h2', 'h3', 'h5', 'h6']                      | 可以传入自定义选择器，比如['.t01', '.t02', '.t03', '.t04'] |
+| titleKey           | title                     | 指定导出的数据，节点文本信息的 key                  | 实例化传入 option                                          |
+| childrenKey        | children                  | 指定导出的数据，子节点的 key                        | 实例化传入 option                                          |
+| clearEmptyChildren | true                      | 是否删除 空子节点的数据的 children 字段             | 实例化传入 option                                          |
+| clearParent        | false                     | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出 | 实例化传入 option                                          |
 
 #### 使用默认 Toc 挂载 时 Options
 
@@ -132,38 +174,6 @@ const DefaultMountTocOptions = {
 | isChildrenHiddenKey | hiddenChildren | 父节点中子级节点隐藏的属性                          | mountToc 传入第二个参数 option |
 | isHiddenKey         | hidden         | 节点自身隐藏属性，修改为其他可以自己增加 css 效果   | mountToc 传入第二个参数 option |
 | isActiveKey         | active         | 节点当前是否激活属性                                | mountToc 传入第二个参数 option |
-
-```css
-.para_node {
-  cursor: pointer;
-  font-size: 14px;
-  user-select: none;
-}
-
-.para_node[active] {
-  color: green;
-}
-
-.para_node_level_0 {
-  padding-left: 20px;
-}
-
-.para_node_level_1 {
-  padding-left: 40px;
-}
-
-.para_node_level_2 {
-  padding-left: 60px;
-}
-
-.para_node_level_3 {
-  padding-left: 80px;
-}
-
-.para_node_level_4 {
-  padding-left: 100px;
-}
-```
 
 ### 不建议修改的配置
 
