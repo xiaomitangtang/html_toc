@@ -5,11 +5,20 @@ const parentKey = '_html_toc_parent'
 const containerActiveTocItemKey = '_html_old_active_toc'
 const containerClickKey = '_htmlClick'
 const tocItemClassPre = 'para_node para_node_level_'
+const tocNodeKey = '_html_toc_node_data'
 const DefaultOptions = {
   titleKey: "title",
   childrenKey: "children",
   clearEmptyChildren: true,
   clearParent: false
+}
+const DefaultMountTocOptions = {
+  scrollbehavior: 'smooth',
+  isChildrenHiddenKey: "hiddenChildren",
+  isHiddenKey: "hidden",
+  isActiveKey: "active",
+  autoToggleChildren: false,
+  clickHanle: null
 }
 class HtmlToc {
   constructor(options) {
@@ -154,7 +163,7 @@ class HtmlToc {
   mountToc(container, options = {}) {
     this.containers = this.containers || []
     const con = this.parseSelector(container)
-    this.generateToc(con, options)
+    this.generateToc(con, Object.assign({}, DefaultMountTocOptions, options))
     this.containers.push(con)
   }
   destory() {
@@ -175,33 +184,70 @@ class HtmlToc {
       const div = document.createElement('div')
       div.innerText = node[this.$titleKey]
       div.className = `${tocItemClassPre}${node[LevelKey]}`
-      div._paraNode = node
+      div[tocNodeKey] = node
       container.appendChild(div)
     })
+    const { scrollbehavior,
+      isChildrenHiddenKey,
+      isHiddenKey,
+      isActiveKey, autoToggleChildren, clickHanle } = options
     function containerClick(e) {
       const tocNode = e.target
-      const userClickHandle = options.clickHanle || null
-      const target = e.target._paraNode[nodeKey]
+      const userClickHandle = clickHanle
+      const target = e.target[tocNodeKey][nodeKey]
       if (userClickHandle) {
         userClickHandle(tocNode, target)
       } else {
         target.scrollIntoView({
-          behavior: 'smooth'
+          behavior: scrollbehavior
         })
       }
+      if (autoToggleChildren) {
+        const hiddenChild = toggleAttr(tocNode, isChildrenHiddenKey)
+        let nextToc = tocNode
+        const curLevel = getTocLevel(tocNode)
+        while (nextToc && nextToc.nextSibling) {
+          nextToc = nextToc.nextSibling
+          const nextLevel = getTocLevel(nextToc)
+          if (!nextLevel) break
+          if (nextLevel > curLevel) {
+            updateAttr(nextToc, isHiddenKey, hiddenChild)
+          } else if (nextLevel <= curLevel) {
+            break
+          }
+        }
+      }
 
-      const old = tocNode.getAttribute('active')
-      if (old) {
-        tocNode.removeAttribute('active')
-      } else {
-        tocNode.setAttribute('active', "true")
-      }
       if (container[containerActiveTocItemKey]) {
-        container[containerActiveTocItemKey].removeAttribute('active')
+        updateAttr(container[containerActiveTocItemKey], isActiveKey, null)
       }
+      updateAttr(tocNode, isActiveKey, true)
       container[containerActiveTocItemKey] = tocNode
     }
+
     container.addEventListener('click', containerClick, false)
     container[containerClickKey] = containerClick
+  }
+}
+
+function getTocLevel(node) {
+  try {
+    return node[tocNodeKey][LevelKey]
+  } catch (error) {
+    return null
+  }
+}
+function toggleAttr(node, key) {
+  let has = node.hasAttribute(key)
+  newVal = !has
+  updateAttr(node, key, newVal)
+  return newVal
+}
+
+function updateAttr(node, key, val) {
+  if (val) {
+    node.setAttribute(key, val)
+  } else {
+    node.removeAttribute(key)
   }
 }

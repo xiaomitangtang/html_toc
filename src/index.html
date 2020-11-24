@@ -34,6 +34,7 @@
       color: red;
       cursor: pointer;
       font-size: 14px;
+      user-select: none;
     }
 
     .para_node[active] {
@@ -150,6 +151,7 @@
   function testToc() {
     const t = new HtmlToc({ root: "#para" })
     t.mountToc('#tree')
+    window.t = t
   }
   testToc()
 </script>
