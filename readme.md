@@ -72,6 +72,19 @@ toc.createPlatData()
 
 ```
 
+### 实例属性以及事件介绍
+
+| 键            | 作用                   | 备注                                                                                     |
+| ------------- | ---------------------- | ---------------------------------------------------------------------------------------- |
+| parseSelector | 解析选择器为 dom 节点  |                                                                                          |
+| getPlatData   | 获取平铺数据           |                                                                                          |
+| getTreeData   | 获取树形数据           |                                                                                          |
+| updateData    | 更新 toc 的节点        | toc 不会监听 dom 变化自动更新，如果 dom 变化，调用此函数，然后在获取数据或者生成新的 toc |
+| addEvent      | 给匹配到的节点添加事件 | {click:clickHandler,...}，添加的是原始的节点事件，不是 toc 上的事件                      |
+| removeEvent   | 给匹配到的节点移除事件 |                                                                                          |
+| mountToc      | 使用默认的样式生成 toc | 第一个参数是目标节点，第二个参数是相关的配置对象                                         |
+| destory       | 销毁                   |                                                                                          |
+
 ### 进行配置的相关设置
 
 ```javascript
@@ -109,7 +122,7 @@ const DefaultMountTocOptions = {
 | clearEmptyChildren | true     | 是否删除 空子节点的数据的 children 字段             | 实例化传入 option |
 | clearParent        | false    | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出 | 实例化传入 option |
 
-#### 使用默认 Toc 时 Options
+#### 使用默认 Toc 挂载 时 Options
 
 | 键                  | 默认值         | 作用                                                | 如何配                         |
 | ------------------- | -------------- | --------------------------------------------------- | ------------------------------ |
@@ -119,6 +132,38 @@ const DefaultMountTocOptions = {
 | isChildrenHiddenKey | hiddenChildren | 父节点中子级节点隐藏的属性                          | mountToc 传入第二个参数 option |
 | isHiddenKey         | hidden         | 节点自身隐藏属性，修改为其他可以自己增加 css 效果   | mountToc 传入第二个参数 option |
 | isActiveKey         | active         | 节点当前是否激活属性                                | mountToc 传入第二个参数 option |
+
+```css
+.para_node {
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.para_node[active] {
+  color: green;
+}
+
+.para_node_level_0 {
+  padding-left: 20px;
+}
+
+.para_node_level_1 {
+  padding-left: 40px;
+}
+
+.para_node_level_2 {
+  padding-left: 60px;
+}
+
+.para_node_level_3 {
+  padding-left: 80px;
+}
+
+.para_node_level_4 {
+  padding-left: 100px;
+}
+```
 
 ### 不建议修改的配置
 
