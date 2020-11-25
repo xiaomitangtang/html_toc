@@ -1,6 +1,6 @@
 {
   "name": "t_html_toc",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "toc html_toc word js paragraph",
   "main": "./dist/index.js",
   "scripts": {
