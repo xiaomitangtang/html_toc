@@ -1,0 +1,30 @@
+.html_toc_node {
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  color: #ccc;
+}
+
+.html_toc_node[active] {
+  color: rgb(25, 214, 25);
+}
+
+.html_toc_node_level_0 {
+  padding-left: 20px;
+}
+
+.html_toc_node_level_1 {
+  padding-left: 40px;
+}
+
+.html_toc_node_level_2 {
+  padding-left: 60px;
+}
+
+.html_toc_node_level_3 {
+  padding-left: 80px;
+}
+
+.html_toc_node_level_4 {
+  padding-left: 100px;
+}

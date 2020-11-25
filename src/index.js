@@ -22,10 +22,10 @@ const DefaultMountTocOptions = {// 生成toc的相关配置  mountToc(container,
   clickHanle: null// toc的点击事件滚动处理函数，传递了就不会自动处理了
 }
 class HtmlToc {
-  constructor(options) {
+  constructor(root, options) {
     options = Object.assign({}, DefaultOptions, options)
     this.$options = options
-    this.$root = this.initRoot()
+    this.$root = this.initRoot(root)
     this.$selectors = this.initSelectors()
     this.$titleKey = options.titleKey
     this.$childrenKey = options.childrenKey
@@ -33,8 +33,7 @@ class HtmlToc {
     this.$clearParent = options.clearParent
     this.updateData()
   }
-  initRoot() {
-    const { root } = this.$options
+  initRoot(root) {
     return this.parseSelector(root)
   }
   parseSelector(selecter) {
@@ -170,7 +169,7 @@ class HtmlToc {
   destory() {
     if (this.containers) {
       this.containers.forEach(con => {
-        con.innerHtml = null
+        con.innerHTML = null
         con.removeEventListener('click', con[containerClickKey], false)
         delete con[containerClickKey]
         delete con[containerActiveTocItemKey]
@@ -179,7 +178,7 @@ class HtmlToc {
   }
 
   generateToc(container, options) {
-    container.innerHtml = null
+    container.innerHTML = null
     let nodes = this.getPlatData()
     nodes.forEach(node => {
       const div = document.createElement('div')
@@ -255,4 +254,9 @@ function updateAttr(node, key, val) {
   } else {
     node.removeAttribute(key)
   }
+}
+
+
+if (module) {
+  module.exports = HtmlToc
 }

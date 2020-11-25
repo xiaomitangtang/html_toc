@@ -1,3 +1,14 @@
+## 介绍
+
+- 本 js 库主要作用域给一个范围内的 html 通过一定的选择器（默认是 h1 - h6）,生成一个目录树
+- 不依赖任何插件和 js 库的纯原生实现
+- 可以内部挂载生成默认的节点
+- 也可以导出平铺或者树形数据提供给其他插件或者库进行使用
+
+- 注意：导出的数据默认包含了 children parent 等 循环依赖的数据
+- 在提供给外部特定的库可能需要去掉对应的循环依赖字段
+- 比如 jsTree 生成需要 titleKey: "text", noparent: true
+
 ## 效果
 
 ![alt 效果](https://github.com/xiaomitangtang/html_toc/blob/master/imgs/toc.png?raw=true)
@@ -7,11 +18,14 @@
 ### 使用默认样式和节点
 
 ```javascript
-const toc = new HtmlToc(options)
-toc.mountToc(mountOptions)
+const HtmlToc = require('t_html_toc')
+require('t_html_toc/src/style.css')
+const options={}，tocOption={} // 具体在下方
+const toc = new HtmlToc('#content',options)
+toc.mountToc('#tree',，tocOption)
 ```
 
-### 暂时不带样式
+### 样式 可以不引入 自己实现即可
 
 | className             | 作用                                |                         |
 | --------------------- | ----------------------------------- | ----------------------- |
@@ -55,7 +69,7 @@ toc.mountToc(mountOptions)
 ### 导出数据给其他 js 库生成个性化的树 比如 jquery 的 jsTree
 
 ```javascript
-  const toc = new HtmlToc({
+  const toc = new HtmlToc('#root',{
     ...
     titleKey: "text",
     noparent: true
@@ -80,7 +94,7 @@ toc.mountToc(mountOptions)
 ### 除了导出 treeData 还可以导出平铺的数据
 
 ```javascript
-const toc = new HtmlToc(options)
+const toc = new HtmlToc(selector, options)
 // 导出  树形数据
 toc.getTreeData()
 // 导出平铺数据
