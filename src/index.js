@@ -1,25 +1,25 @@
-const Default_selectors = ['h1', 'h2', 'h3', 'h5', 'h6']
-const LevelKey = '_html_toc_level'
-const nodeKey = '_html_toc_node'
-const parentKey = '_html_toc_parent'
-const containerActiveTocItemKey = '_html_old_active_toc'
-const containerClickKey = '_htmlClick'
-const tocItemClassPre = 'html_toc_node html_toc_node_level_'
-const tocNodeKey = '_html_toc_node_data'
-const DefaultOptions = {
-  titleKey: "title",
-  childrenKey: "children",
-  selecters: Default_selectors,
-  clearEmptyChildren: true,
-  clearParent: false
+const Default_selectors = ['h1', 'h2', 'h3', 'h5', 'h6']// 默认的选择器
+const LevelKey = '_html_toc_level'// dom节点以及生成的数据项 保存层级的字段名
+const nodeKey = '_html_toc_node'// 生成的数据保存原始dom节点的字段名
+const parentKey = '_html_toc_parent'// 生成的数据，树形保存父级节点的字段名
+const containerActiveTocItemKey = '_html_old_active_toc'// 挂载toc的容器上保存上一次高亮的toc dom元素的字段名
+const containerClickKey = '_htmlClick'// 挂载toc的容器上保存点击事件的字段名
+const tocItemClassPre = 'html_toc_node html_toc_node_level_'// 生成的toc 元素节点所包含的className的前缀，
+const tocNodeKey = '_html_toc_node_data'//toc 元素上保存 生成的toc数据的字段名
+const DefaultOptions = { // 生成数据的相关配置   new HtmlToc(root,OPTION)  这里的option
+  titleKey: "title",// 生成数据保存原始节点文本内容的字段
+  childrenKey: "children",// 树形数据保存子节点的字段
+  selecters: Default_selectors,// 指定 生成toc需要抽取的dom选择器列表，列表顺序即是最终生成的level层级，只支持 .xxx tag id  不支持嵌套
+  clearEmptyChildren: true,// 树形数据是否去掉 children=[] 是的children字段
+  clearParent: false// 树形数据是否保留parent，用以规避在某些外部插件生成树时内存溢出，目前测试的 jq的jsTree需要去掉parent
 }
-const DefaultMountTocOptions = {
-  scrollbehavior: 'smooth',
-  isChildrenHiddenKey: "hiddenChildren",
-  isHiddenKey: "hidden",
-  isActiveKey: "active",
-  autoToggleChildren: false,
-  clickHanle: null
+const DefaultMountTocOptions = {// 生成toc的相关配置  mountToc(container,OPTION)  中的option
+  scrollbehavior: 'smooth',// 内部是调用的dom的 scrollIntoView实现页面滚动，该字段是传递给此函数的 behavior
+  isChildrenHiddenKey: "hiddenChildren",// 当前toc的子级toc是否处于隐藏状态的属性
+  isHiddenKey: "hidden",//toc节点自身是否隐藏的属性
+  isActiveKey: "active",// toc节点是否激活的属性
+  autoToggleChildren: false,// 是否启动子节点的显示隐藏操作
+  clickHanle: null// toc的点击事件滚动处理函数，传递了就不会自动处理了
 }
 class HtmlToc {
   constructor(options) {
@@ -41,7 +41,7 @@ class HtmlToc {
     if (selecter.nodeType === 1) return selecter
     if (/^\#/.test(selecter)) return document.getElementById(selecter.slice(1))
     if (/\^\./.test(selecter)) return document.getElementsByClassName(selecter.slice(1))[0]
-    return document.getElementsByTagName(selecter)
+    return document.getElementsByTagName(selecter)[0]
   }
   initSelectors() {
     const selecters = (this.$options.selecters || Default_selectors).filter(Boolean)
@@ -193,37 +193,41 @@ class HtmlToc {
       isHiddenKey,
       isActiveKey, autoToggleChildren, clickHanle } = options
     function containerClick(e) {
-      const tocNode = e.target
-      const userClickHandle = clickHanle
-      const target = e.target[tocNodeKey][nodeKey]
-      if (userClickHandle) {
-        userClickHandle(tocNode, target)
-      } else {
-        target.scrollIntoView({
-          behavior: scrollbehavior
-        })
-      }
-      if (autoToggleChildren) {
-        const hiddenChild = toggleAttr(tocNode, isChildrenHiddenKey)
-        let nextToc = tocNode
-        const curLevel = getTocLevel(tocNode)
-        while (nextToc && nextToc.nextSibling) {
-          nextToc = nextToc.nextSibling
-          const nextLevel = getTocLevel(nextToc)
-          if (!nextLevel) break
-          if (nextLevel > curLevel) {
-            updateAttr(nextToc, isHiddenKey, hiddenChild)
-          } else if (nextLevel <= curLevel) {
-            break
+      try {
+        const tocNode = e.target
+        const target = e.target[tocNodeKey][nodeKey]
+        const userClickHandle = clickHanle
+        if (userClickHandle) {
+          userClickHandle(tocNode, target)
+        } else {
+          target.scrollIntoView({
+            behavior: scrollbehavior
+          })
+        }
+        if (autoToggleChildren) {
+          const hiddenChild = toggleAttr(tocNode, isChildrenHiddenKey)
+          let nextToc = tocNode
+          const curLevel = getTocLevel(tocNode)
+          while (nextToc && nextToc.nextSibling) {
+            nextToc = nextToc.nextSibling
+            const nextLevel = getTocLevel(nextToc)
+            if (!nextLevel) break
+            if (nextLevel > curLevel) {
+              updateAttr(nextToc, isHiddenKey, hiddenChild)
+            } else if (nextLevel <= curLevel) {
+              break
+            }
           }
         }
-      }
 
-      if (container[containerActiveTocItemKey]) {
-        updateAttr(container[containerActiveTocItemKey], isActiveKey, null)
+        if (container[containerActiveTocItemKey]) {
+          updateAttr(container[containerActiveTocItemKey], isActiveKey, null)
+        }
+        updateAttr(tocNode, isActiveKey, true)
+        container[containerActiveTocItemKey] = tocNode
+      } catch (error) {
+        console.log('自动处理节点出错', error)
       }
-      updateAttr(tocNode, isActiveKey, true)
-      container[containerActiveTocItemKey] = tocNode
     }
 
     container.addEventListener('click', containerClick, false)
