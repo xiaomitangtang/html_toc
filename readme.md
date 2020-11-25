@@ -21,11 +21,20 @@
 ### 使用默认样式和节点
 
 ```javascript
-const HtmlToc = require('t_html_toc')
-require('t_html_toc/src/style.css')
+// 一下几种引入均可 webpack
+  const HtmlToc = require('t_html_toc')
+  import HtmlToc = from 't_html_toc'
+  require('t_html_toc/src/style.css')
+// 如果是浏览器  可以使用  /dist/index.umd.js  /src/index.js
+
+
 const options={}，tocOption={} // 具体在下方
 const toc = new HtmlToc('#content',options)
 toc.mountToc('#tree'，tocOption)
+```
+
+```
+
 ```
 
 ### 样式 可以不引入 自己实现即可
