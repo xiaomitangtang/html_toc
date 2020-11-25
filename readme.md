@@ -9,6 +9,9 @@
 - 在提供给外部特定的库可能需要去掉对应的循环依赖字段
 - 比如 jsTree 生成需要 titleKey: "text", noparent: true
 
+- 与 wow 等库进行结合时，由于元素 dispplay=none，此时 dom 节点的 innerText 获取不到参数，所以提供了 nodeToTitle 配置项，用于自定义处理，可以使用 innerHTML 或者 contentText 均可获取
+- 内部使用 scrollIntoView 进行默认的滚动处理，兼容性尚可，并与之相对用有 scrollbehavior scrollParams 两个参数作为参数传递 后者优先级更高，请注意兼容性，部分浏览器不支持对象参数
+
 ## 效果
 
 ![alt 效果](https://github.com/xiaomitangtang/html_toc/blob/master/imgs/toc.png?raw=true)
@@ -175,14 +178,14 @@ const DefaultMountTocOptions = {
 
 #### 实例化时的 Options
 
-| 键                 | 默认值                         | 作用                                                | 如何配                                                     |
-| ------------------ | ------------------------------ | --------------------------------------------------- | ---------------------------------------------------------- |
-| selecters          | ['h1', 'h2', 'h3', 'h5', 'h6'] | 用于生成 toc 的选择器列表                           | 可以传入自定义选择器，比如['.t01', '.t02', '.t03', '.t04'] |
-| titleKey           | title                          | 指定导出的数据，节点文本信息的 key                  | 实例化传入 option                                          |
-| nodeToTitle        | node => node.innerText         | 匹配到节点时，获取文本的函数                        | 实例化传入 option                                          |
-| childrenKey        | children                       | 指定导出的数据，子节点的 key                        | 实例化传入 option                                          |
-| clearEmptyChildren | true                           | 是否删除 空子节点的数据的 children 字段             | 实例化传入 option                                          |
-| clearParent        | false                          | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出 | 实例化传入 option                                          |
+| 键                 | 默认值                         | 作用                                                                                                  | 如何配                                                     |
+| ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| selecters          | ['h1', 'h2', 'h3', 'h5', 'h6'] | 用于生成 toc 的选择器列表                                                                             | 可以传入自定义选择器，比如['.t01', '.t02', '.t03', '.t04'] |
+| titleKey           | title                          | 指定导出的数据，节点文本信息的 key                                                                    | 实例化传入 option                                          |
+| nodeToTitle        | node => node.innerText         | 匹配到节点时，获取文本的函数,用于一些特殊处理，比如 display=none 时，innerText 获取不到，可以自行处理 | 实例化传入 option                                          |
+| childrenKey        | children                       | 指定导出的数据，子节点的 key                                                                          | 实例化传入 option                                          |
+| clearEmptyChildren | true                           | 是否删除 空子节点的数据的 children 字段                                                               | 实例化传入 option                                          |
+| clearParent        | false                          | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出                                                   | 实例化传入 option                                          |
 
 #### 使用默认 Toc 挂载 时 Options
 

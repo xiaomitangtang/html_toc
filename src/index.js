@@ -26,14 +26,15 @@ const DefaultMountTocOptions = {// 生成toc的相关配置  mountToc(container,
 class HtmlToc {
   constructor(root, options) {
     options = Object.assign({}, DefaultOptions, options)
+    const { titleKey, nodeToTitle, childrenKey, clearEmptyChildren, clearParent } = options
     this.$options = options
     this.$root = this.initRoot(root)
     this.$selectors = this.initSelectors()
-    this.$titleKey = options.titleKey
-    this.$nodeToTitle = options.nodeToTitle
-    this.$childrenKey = options.childrenKey
-    this.$clearEmptyChildren = options.clearEmptyChildren
-    this.$clearParent = options.clearParent
+    this.$titleKey = titleKey
+    this.$nodeToTitle = nodeToTitle
+    this.$childrenKey = childrenKey
+    this.$clearEmptyChildren = clearEmptyChildren
+    this.$clearParent = clearParent
     this.updateData()
   }
   initRoot(root) {
