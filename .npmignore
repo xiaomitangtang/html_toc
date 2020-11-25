@@ -1,3 +1,5 @@
 imgs/*
 
 src/index.html
+package-lock.json
+webpack*

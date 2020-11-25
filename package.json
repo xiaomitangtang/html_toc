@@ -2,9 +2,11 @@
   "name": "t_html_toc",
   "version": "0.0.8",
   "description": "toc html_toc word js paragraph",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:es && npm run build:umd",
+    "build:es": "webpack --config ./webpack.config.es.js",
+    "build:umd": "webpack --config ./webpack.config.umd.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,12 @@
   "bugs": {
     "url": "https://github.com/xiaomitangtang/html_toc/issues"
   },
-  "homepage": "https://github.com/xiaomitangtang/html_toc#readme"
+  "homepage": "https://github.com/xiaomitangtang/html_toc#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.1",
+    "polyfill": "^0.1.0",
+    "webpack": "^5.6.0"
+  }
 }
