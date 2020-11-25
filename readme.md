@@ -22,7 +22,7 @@ const HtmlToc = require('t_html_toc')
 require('t_html_toc/src/style.css')
 const options={}，tocOption={} // 具体在下方
 const toc = new HtmlToc('#content',options)
-toc.mountToc('#tree',，tocOption)
+toc.mountToc('#tree'，tocOption)
 ```
 
 ### 样式 可以不引入 自己实现即可
@@ -157,6 +157,7 @@ const tocItemClassPre = 'html_toc_node html_toc_node_level_'
 const tocNodeKey = '_html_toc_node_data'
 const DefaultOptions = {
   titleKey: 'title',
+  nodeToTitle: (node) => node.innerText,
   childrenKey: 'children',
   clearEmptyChildren: true,
   clearParent: false,
@@ -178,20 +179,22 @@ const DefaultMountTocOptions = {
 | ------------------ | ------------------------------ | --------------------------------------------------- | ---------------------------------------------------------- |
 | selecters          | ['h1', 'h2', 'h3', 'h5', 'h6'] | 用于生成 toc 的选择器列表                           | 可以传入自定义选择器，比如['.t01', '.t02', '.t03', '.t04'] |
 | titleKey           | title                          | 指定导出的数据，节点文本信息的 key                  | 实例化传入 option                                          |
+| nodeToTitle        | node => node.innerText         | 匹配到节点时，获取文本的函数                        | 实例化传入 option                                          |
 | childrenKey        | children                       | 指定导出的数据，子节点的 key                        | 实例化传入 option                                          |
 | clearEmptyChildren | true                           | 是否删除 空子节点的数据的 children 字段             | 实例化传入 option                                          |
 | clearParent        | false                          | 是否去掉数据节点父节点信息，jsTree 不去掉会内存溢出 | 实例化传入 option                                          |
 
 #### 使用默认 Toc 挂载 时 Options
 
-| 键                  | 默认值         | 作用                                                | 如何配                         |
-| ------------------- | -------------- | --------------------------------------------------- | ------------------------------ |
-| clickHanle          | null           | 点击 toc 元素的处理函数，如果存在，就不会默认滚动了 | mountToc 传入第二个参数 option |
-| scrollbehavior      | smooth         | 默认的处理滚动的 scrollIntoView 参数                | mountToc 传入第二个参数 option |
-| autoToggleChildren  | false          | 是否修改子节点的相关属性，用于折叠子级 toc          | mountToc 传入第二个参数        |
-| isChildrenHiddenKey | hiddenChildren | 父节点中子级节点隐藏的属性                          | mountToc 传入第二个参数 option |
-| isHiddenKey         | hidden         | 节点自身隐藏属性，修改为其他可以自己增加 css 效果   | mountToc 传入第二个参数 option |
-| isActiveKey         | active         | 节点当前是否激活属性                                | mountToc 传入第二个参数 option |
+| 键                  | 默认值         | 作用                                                                                                                      | 如何配                         |
+| ------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| clickHanle          | null           | 点击 toc 元素的处理函数，如果存在，就不会默认滚动了                                                                       | mountToc 传入第二个参数 option |
+| scrollbehavior      | smooth         | 默认的处理滚动的 scrollIntoView 参数 behavior 在无 scrollParams 时有效                                                    | mountToc 传入第二个参数 option |
+| scrollParams        | null           | 处理滚动的 scrollIntoView 参数 对象，优先级高于 scrollbehavior ,{ behavior: "smooth", block: "center", inline: "center" } | mountToc 传入第二个参数 option |
+| autoToggleChildren  | false          | 是否修改子节点的相关属性，用于折叠子级 toc                                                                                | mountToc 传入第二个参数        |
+| isChildrenHiddenKey | hiddenChildren | 父节点中子级节点隐藏的属性                                                                                                | mountToc 传入第二个参数 option |
+| isHiddenKey         | hidden         | 节点自身隐藏属性，修改为其他可以自己增加 css 效果                                                                         | mountToc 传入第二个参数 option |
+| isActiveKey         | active         | 节点当前是否激活属性                                                                                                      | mountToc 传入第二个参数 option |
 
 ### 不建议修改的配置
 

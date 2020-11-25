@@ -8,6 +8,7 @@ const tocItemClassPre = 'html_toc_node html_toc_node_level_'// 生成的toc 元�
 const tocNodeKey = '_html_toc_node_data'//toc 元素上保存 生成的toc数据的字段名
 const DefaultOptions = { // 生成数据的相关配置   new HtmlToc(root,OPTION)  这里的option
   titleKey: "title",// 生成数据保存原始节点文本内容的字段
+  nodeToTitle: node => node.innerText,// 匹配到节点，获取toc 文本内容的函数，可以自有获取，默认是获取innerText
   childrenKey: "children",// 树形数据保存子节点的字段
   selecters: Default_selectors,// 指定 生成toc需要抽取的dom选择器列表，列表顺序即是最终生成的level层级，只支持 .xxx tag id  不支持嵌套
   clearEmptyChildren: true,// 树形数据是否去掉 children=[] 是的children字段
@@ -15,6 +16,7 @@ const DefaultOptions = { // 生成数据的相关配置   new HtmlToc(root,OPTIO
 }
 const DefaultMountTocOptions = {// 生成toc的相关配置  mountToc(container,OPTION)  中的option
   scrollbehavior: 'smooth',// 内部是调用的dom的 scrollIntoView实现页面滚动，该字段是传递给此函数的 behavior
+  scrollParams: null,// 内部是调用的dom的 scrollIntoView实现页面滚动，该字段是传递给此函数的 option
   isChildrenHiddenKey: "hiddenChildren",// 当前toc的子级toc是否处于隐藏状态的属性
   isHiddenKey: "hidden",//toc节点自身是否隐藏的属性
   isActiveKey: "active",// toc节点是否激活的属性
@@ -28,6 +30,7 @@ class HtmlToc {
     this.$root = this.initRoot(root)
     this.$selectors = this.initSelectors()
     this.$titleKey = options.titleKey
+    this.$nodeToTitle = options.nodeToTitle
     this.$childrenKey = options.childrenKey
     this.$clearEmptyChildren = options.clearEmptyChildren
     this.$clearParent = options.clearParent
@@ -110,7 +113,7 @@ class HtmlToc {
     })
   }
   createPlatData() {
-    return this.$targetList.map(node => ({ [LevelKey]: node[LevelKey], [nodeKey]: node, [this.$titleKey]: node.innerText }))
+    return this.$targetList.map(node => ({ [LevelKey]: node[LevelKey], [nodeKey]: node, [this.$titleKey]: this.$nodeToTitle(node) }))
   }
   createTreeData() {
     let rootList = []
@@ -118,7 +121,7 @@ class HtmlToc {
     let tmpNode = null
     this.$targetList.forEach(node => {
       let nodeLevel = node[LevelKey]
-      let curNode = { [LevelKey]: nodeLevel, [this.$titleKey]: node.innerText, [nodeKey]: node, [this.$childrenKey]: [] }
+      let curNode = { [LevelKey]: nodeLevel, [this.$titleKey]: this.$nodeToTitle(node), [nodeKey]: node, [this.$childrenKey]: [] }
       plathtmlTocNodes.push(curNode)
       if (!tmpNode) {
         tmpNode = curNode
@@ -198,7 +201,7 @@ class HtmlToc {
     const { scrollbehavior,
       isChildrenHiddenKey,
       isHiddenKey,
-      isActiveKey, autoToggleChildren, clickHanle } = options
+      isActiveKey, autoToggleChildren, clickHanle, scrollParams } = options
     function containerClick(e) {
       if (!e.target[tocNodeKey] || !e.target[tocNodeKey][nodeKey]) {
         // toc上都有这个字段，没有的说明不是toc
@@ -211,7 +214,7 @@ class HtmlToc {
         if (userClickHandle) {
           userClickHandle(tocNode, target)
         } else {
-          target.scrollIntoView({
+          target.scrollIntoView(scrollParams || {
             behavior: scrollbehavior
           })
         }

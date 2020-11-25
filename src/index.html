@@ -142,8 +142,16 @@
 
 
   function testToc() {
-    const t = new HtmlToc("#html_toc")
-    t.mountToc('#tree')
+    const t = new HtmlToc("#html_toc", {
+      nodeToTitle(node) { return 1 }
+    })
+    t.mountToc('#tree', {
+      scrollParams: {
+        behavior: "smooth",
+        block: "center",
+        inline: "center"
+      }
+    })
     window.t = t
   }
   testToc()
