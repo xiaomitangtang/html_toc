@@ -143,7 +143,10 @@
 
   function testToc() {
     const t = new HtmlToc("#html_toc", {
-      nodeToTitle(node) { return 1 }
+      nodeToTitle(node) {
+
+        return node.innerText + '111'
+      }
     })
     t.mountToc('#tree', {
       scrollParams: {
