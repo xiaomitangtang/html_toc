@@ -85,6 +85,7 @@ class HtmlToc {
   getTreeData() {
     return this.createTreeData()
   }
+  //从新获取文章内容的标题节点
   updateData() {
     if (!this.$root) {
       console.log('root不能为空',)
@@ -93,7 +94,7 @@ class HtmlToc {
     this.$targetList = []
     this.loopChild(this.$root)
   }
-
+  // 这两个函数是给  匹配到的文章内容的对应标题节点添加和移除事件
   addEvent(eventObj = {}) {
     this.$targetList.forEach(node => {
       Object.keys(eventObj).forEach(key => {
@@ -124,19 +125,23 @@ class HtmlToc {
         rootList.push(tmpNode)
       } else {
         if (nodeLevel === tmpNode[LevelKey]) {
+          // 层级相同，往共同的父级添加子节点即可
           if (tmpNode[parentKey]) {
+            // 如果父级存在
             tmpNode[parentKey][this.$childrenKey].push(curNode)
             tmpNode = tmpNode[parentKey]
             curNode[parentKey] = tmpNode
           } else {
+            // 父级不存在则存到顶级节点中
             rootList.push(curNode)
             tmpNode = rootList[rootList.length - 1]
           }
-
+          // 如果层级比前一个高   那么就是其子节点
         } else if (nodeLevel > tmpNode[LevelKey]) {
           tmpNode[this.$childrenKey].push(curNode)
           curNode[parentKey] = tmpNode
         }
+        // 如果层级比前一个低，则不是其子节点，需要向上找父节点
         else if (nodeLevel < tmpNode[LevelKey]) {
           while (tmpNode && tmpNode[LevelKey] >= nodeLevel) {
             tmpNode = tmpNode[parentKey]
@@ -144,6 +149,9 @@ class HtmlToc {
           if (!tmpNode) {
             tmpNode = curNode
             rootList.push(tmpNode)
+          } else {
+            // 如果存在 那么此时 tmpNode的层级 < curNode的层级， tmpNode是父节点
+            tmpNode[this.$childrenKey].push(curNode)
           }
         }
       }
@@ -192,9 +200,13 @@ class HtmlToc {
       isHiddenKey,
       isActiveKey, autoToggleChildren, clickHanle } = options
     function containerClick(e) {
+      if (!e.target[tocNodeKey] || !e.target[tocNodeKey][nodeKey]) {
+        // toc上都有这个字段，没有的说明不是toc
+        return
+      }
       try {
-        const tocNode = e.target
-        const target = e.target[tocNodeKey][nodeKey]
+        const tocNode = e.target// 指向点击的toc节点
+        const target = e.target[tocNodeKey][nodeKey]// 指向toc所对应的 文章内容的标题实际dom节点
         const userClickHandle = clickHanle
         if (userClickHandle) {
           userClickHandle(tocNode, target)
@@ -210,6 +222,7 @@ class HtmlToc {
           while (nextToc && nextToc.nextSibling) {
             nextToc = nextToc.nextSibling
             const nextLevel = getTocLevel(nextToc)
+            // 为0 说明是顶级toc  为null说明不是toc  否符合终止循环条件
             if (!nextLevel) break
             if (nextLevel > curLevel) {
               updateAttr(nextToc, isHiddenKey, hiddenChild)
@@ -218,11 +231,12 @@ class HtmlToc {
             }
           }
         }
-
+        // 如果存在 高亮节点，则先取消其高亮状态，在激活当前点击的toc高亮   当前设计只允许同时高亮一个toc节点
         if (container[containerActiveTocItemKey]) {
           updateAttr(container[containerActiveTocItemKey], isActiveKey, null)
         }
         updateAttr(tocNode, isActiveKey, true)
+        // 存储当前toc为高亮节点
         container[containerActiveTocItemKey] = tocNode
       } catch (error) {
         console.log('自动处理节点出错', error)
@@ -257,6 +271,6 @@ function updateAttr(node, key, val) {
 }
 
 
-if (module) {
+if (typeof module !== "undefined") {
   module.exports = HtmlToc
 }
