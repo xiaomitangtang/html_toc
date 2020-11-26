@@ -84,7 +84,7 @@ toc.mountToc('#tree'，tocOption)
   const toc = new HtmlToc('#root',{
     ...
     titleKey: "text",
-    noparent: true
+    clearParent: true
   })
 
    const data = t2.getTreeData()
@@ -96,7 +96,7 @@ toc.mountToc('#tree'，tocOption)
       }
     }).on('changed.jstree', (e, data) => {
       // 这么取值完全是插件是这么设计的，
-      let tocTarget = data.node.original.node
+      let tocTarget = data.node.original._html_toc_node
       tocTarget.scrollIntoView({
         behavior: 'smooth'
       })

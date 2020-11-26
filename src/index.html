@@ -120,7 +120,7 @@
     const t2 = new HtmlToc("#html_toc", {
       selecters: ['.t01', '.t02', '.t03', '.t04'],
       titleKey: "text",
-      noparent: true
+      clearParent: true
     })
 
     const data = t2.getTreeData()
@@ -132,14 +132,14 @@
       }
     }).on('changed.jstree', (e, data) => {
       // 这么取值完全是插件是这么设计的，
-      let html_tocTarget = data.node.original.node
+      let html_tocTarget = data.node.original._html_toc_node
       html_tocTarget.scrollIntoView({
         behavior: 'smooth'
       })
     })
   }
 
-  // demoForJqTree()
+  demoForJqTree()
 
 
   function testToc() {
@@ -158,7 +158,7 @@
     })
     window.t = t
   }
-  testToc()
+  // testToc()
 </script>
 
 </html>
