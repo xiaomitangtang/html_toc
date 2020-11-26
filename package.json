@@ -1,6 +1,6 @@
 {
   "name": "t_html_toc",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "toc html_toc word js paragraph",
   "main": "./dist/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/xiaomitangtang/html_toc/issues"
   },
-  "homepage": "https://github.com/xiaomitangtang/html_toc#readme",
+  "homepage": "https://www.tcmiao.com",
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",

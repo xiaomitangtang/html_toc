@@ -12,6 +12,8 @@
 - 与 wow 等库进行结合时，由于元素 dispplay=none，此时 dom 节点的 innerText 获取不到参数，所以提供了 nodeToTitle 配置项，用于自定义处理，可以使用 innerHTML 或者 contentText 均可获取
 - 内部使用 scrollIntoView 进行默认的滚动处理，兼容性尚可，并与之相对用有 scrollbehavior scrollParams 两个参数作为参数传递 后者优先级更高，请注意兼容性，部分浏览器不支持对象参数
 
+## [在线 demo](https://www.tcmiao.com/2020/11/26/t-html-toc)
+
 ## 效果
 
 ![alt 效果](https://github.com/xiaomitangtang/html_toc/blob/master/imgs/toc.png?raw=true)
